@@ -1,0 +1,14 @@
+body {
+	background-color: #AFE;
+}
+h1 {
+	text-align: center;
+	font-style: oblique;
+}
+#viewport {
+	border: 5px solid #333;
+  	margin: 0 auto;
+  	height: 400px;
+  	width: 400px;
+  	background-color: #888;
+}
