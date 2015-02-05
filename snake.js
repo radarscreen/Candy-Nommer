@@ -2,6 +2,8 @@ Physics(function(world){
   var viewWidth = 400;
   var viewHeight = 400;
 
+  var snakeVel;
+
   var renderer = Physics.renderer('canvas', {
     el: 'viewport',
     width: viewWidth,
@@ -35,26 +37,23 @@ Physics(function(world){
     y: Math.floor((Math.random() * 380) + 6),
     radius: 10,
     styles: {
-    strokeStyle: '#351024',
-    lineWidth: 1,
-    fillStyle: 'red',
-    angleIndicator: 'white',
-    objectType: 'apple'
-  }
+      strokeStyle: '#351024',
+      lineWidth: 1,
+      fillStyle: 'red',
+      angleIndicator: 'white',
+      objectType: 'apple'
+    }
   });
-
 
   world.add(apple);
 
-
   var newApple = Physics.body('circle', {
-
   radius: 10,
   styles: {
-  fillStyle: 'green',
-  angleIndicator: 'white',
-  objectType: 'apple'
-  }
+    fillStyle: 'green',
+    angleIndicator: 'white',
+    objectType: 'apple'
+    }
   });
  
 
@@ -65,25 +64,21 @@ Physics(function(world){
   var snake = Physics.body('rectangle', {
     x: 200, // x-coordinate
     y: 250, // y-coordinate
-    vx: 0.1,
+    vx: 0.0,
     vy: 0.0,
     width: 10,
     height: 10,
+    mass: 120000000000,
     styles: {
       fillStyle: 'black',
       angleIndicator: 'white'
     }
-    
-    // vx: 3.3,    attempt to set constant velocity to snake.
-    // vy: 2.20    would keyPress Events interfere with this?
 
   });
 
   snake.sleep(true);
 
   world.add(snake);
-
-  // var wall = Physics.body()
   
   // constrain objects to these bounds
   world.add(Physics.behavior('edge-collision-detection', {
@@ -99,8 +94,6 @@ Physics(function(world){
 
   world.add( Physics.behavior('sweep-prune') );
 
-  // add some gravity
-  // world.add( Physics.behavior('constant-acceleration') );
 
   // subscribe to ticker to advance the simulation
   Physics.util.ticker.on(function( time, dt ){
@@ -124,32 +117,40 @@ Physics(function(world){
   Physics.util.ticker.start();
 
   world.on('move', function(data, e) {
-    var pixels = (data === 'left' || data === 'top' ? -20 : 20);
+    
     var vel = snake.state.vel;
-    if (data === 'left' || data === 'right') {
-      vel.set(pos.x + 0.1, pos.y);
-    } else {
-      pos.set(pos.x, pos.y + pixels);
+    if (data === 'left') {
+      vel.set(-0.1, 0);
+    } else if (data === 'right') {
+      vel.set(0.1, 0);
     }
+    else if (data === 'top') {
+      vel.set(0, -0.1);
+    }
+    else {
+      vel.set(0, 0.1);
+    }
+
+    snakeVel = vel;
   });
 
-  //is there any way a collision is not possible if we were to use(and can we use) decimal points in our px moves?
  var counter = 0;
   world.on('collisions:detected', function(data, e) {
     data.collisions[0].bodyA.sleep(true);
     data.collisions[0].bodyB.sleep(true);
 
    
-    // need to use a for in loop?
-    // for (var i = 0, i != Physics.util.ticker.stop() , i++ ) {  what is my binding factor for i?
     if (snake === data.collisions[0].bodyA && apple === data.collisions[0].bodyB || apple === data.collisions[0].bodyA && snake === data.collisions[0].bodyB) {
       console.log( "snake eats apple");
       world.removeBody(apple);
       
       newApple.state.pos.set(Math.floor((Math.random() * 380)+11), Math.floor((Math.random() * 380)+11));
     
-    counter++;
-    
+      counter++;
+
+      
+      snake.state.vel = snakeVel;
+      snake.sleep(false); 
 
       world.add(newApple);
 
@@ -165,8 +166,11 @@ Physics(function(world){
       world.removeBody(newApple);
       apple.state.pos.set(Math.floor((Math.random() * 380) + 11), Math.floor((Math.random() * 380) + 11));
       
-
       counter++;
+
+      
+      snake.state.vel = snakeVel;
+      snake.sleep(false);
       
       world.add(apple);
     }
@@ -186,12 +190,10 @@ Physics(function(world){
 
     else  {
       console.log( "snake dies");
-      // alert("snake dies");
+     
       Physics.util.ticker.stop();
-  
-      // this.clear();    
+    
     }
-    // counter++;
     console.log("Your score is " + (counter*7));
   });
 
@@ -215,4 +217,15 @@ Physics(function(world){
 
 // This is a bit outdated, but has some examples: http://flippinawesome.org/2013/12/02/building-a-2d-browser-game-with-physicsjs/
 // http://stackoverflow.com/questions/23668005/agregate-bodies-in-physicsjs
+
+// body.before-game:after {
+//     content: 'press "z" to start';
+// }
+// body.lose-game:after {
+//     content: 'press "z" to try again';                    BEFORE AFTER GAME!  (IN HTML)
+// }
+// body.win-game:after {
+//     content: 'Win! press "z" to play again';
+//http://modernweb.com/2013/12/02/building-a-2d-browser-game-with-physicsjs/
+
 });

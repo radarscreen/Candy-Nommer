@@ -1,9 +1,25 @@
 body {
 	background-color: #AFE;
+	background-image: url(snakeMonster.jpg);
+	/*background-size: cover;*/
+	background-position: 500px;
+	background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding-left: 40px;
+	
 }
 h1 {
 	text-align: center;
-	font-style: oblique;
+	font-family: 'Press Start 2P', cursive;
+	color: #333;
+}
+h2 {
+	font-size: 12px;
+	font-family: 'Press Start 2P', cursive;
+	color: #333;
+}
+#snakeHead {
+	margin: 10px;
 }
 #viewport {
 	border: 5px solid #333;
@@ -11,4 +27,14 @@ h1 {
   	height: 400px;
   	width: 400px;
   	background-color: #888;
+}
+
+#score {
+	border: 5px solid #333;
+  	margin: 0 auto;
+  	padding: 5px;
+  	height: 40px;
+  	width: 400px;
+  	background-color: #888;
+  	margin: 20px auto;
 }
