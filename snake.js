@@ -5,6 +5,7 @@ Physics(function(world){
   var viewHeight = 400;
 
   var snakeVel;
+  var snakeSpeed = 0.1;
 
   //define renderer
   var renderer = Physics.renderer('canvas', {
@@ -41,6 +42,10 @@ Physics(function(world){
       objectType: 'apple'
     }
   });
+
+  // add image of candy
+  apple.view = new Image();
+  apple.view.src = 'straightCandy.png';
 
   world.add(apple);
 
@@ -123,17 +128,19 @@ Physics(function(world){
 
   // sets constant velocity of snake
   world.on('move', function(data, e) {
+   
     var vel = snake.state.vel;
     if (data === 'left') {
-      vel.set(-0.1, 0);
-    } else if (data === 'right') {
-      vel.set(0.1, 0);
+      vel.set(-snakeSpeed, 0);
+    } 
+    else if (data === 'right') {
+      vel.set(snakeSpeed, 0);
     }
     else if (data === 'top') {
-      vel.set(0, -0.1);
+      vel.set(0, -snakeSpeed);
     }
     else {
-      vel.set(0, 0.1);
+      vel.set(0, snakeSpeed);
     }
 
     // value designated to retrieve velocity within other functions
@@ -160,8 +167,30 @@ Physics(function(world){
       // the players score increases
       counter++;
 
-      // the snake's velocity is maintained and the snake stays awake (does not stop upon collision),
+      // snake speed increases
+      snakeSpeed += 0.1;
+
+      //left
+      if (snakeVel.x < 0 ) {
+        snakeVel.set(-snakeSpeed, 0);
+      } 
+      //right
+      else if (snakeVel.x > 0) {
+         snakeVel.set(snakeSpeed, 0);
+      }
+      //up
+      else if (snakeVel.y < 0) {
+          snakeVel.set(0, -snakeSpeed);
+      }
+      //down
+      else if (snakeVel.y > 0) {
+          snakeVel.set(0, snakeSpeed);
+      }
+
       snake.state.vel = snakeVel;
+
+
+
       snake.sleep(false); 
 
       // and add the newApple to the viewport for the snake to chase.
@@ -187,22 +216,9 @@ Physics(function(world){
       world.add(apple);
     }
 
-    // if the snake collides with its own body, it dies, world rendering stops. 
-    // else if (snake === data.collisions[0].bodyA && snake === data.collisions[0].bodyB) {
-    //   console.log( "snake eats self");
-
-      // Physics.util.ticker.stop();
-
-    //   disconnect: function(world){
-    //         world.off( 'remove:snake');
-    //         world.off( 'remove:apple');
-    //         this.clear();
-    //     }
-    // }
-
     // if there are any other collisions (like snake with wall), snake dies, world rendering stops.
     else  {
-      console.log("snake dies");   //why is snake dying three times and does it matter?
+      console.log("Running into Walls!! Kid Crashes!");   //why is snake dying three times and does it matter?
      
       Physics.util.ticker.stop();
     
@@ -210,7 +226,7 @@ Physics(function(world){
 
     // keeps track of player score. 
     console.log("Your score is " + (counter*7));
-    $("#scorer").text("Score: " + (counter*7));
+    $("#scorer").text("Hyperactivity Rating: " + (counter*7));
   });
 
 

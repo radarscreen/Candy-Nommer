@@ -1,9 +1,7 @@
 body {
-	background-color: black;
-	background-image: url(snakeMonster.jpg);
-	/*background-size: cover;*/
-	background-position: -303px;
-	background-repeat: no-repeat;
+	background-color: pink;
+	background-image: url(candyWorld.jpeg);
+	background-repeat: repeat;
     background-attachment: fixed;
     padding-left: 40px;
 	
@@ -26,7 +24,7 @@ h2 {
   	margin: 0 auto;
   	height: 400px;
   	width: 400px;
-  	background-color: #888;
+  	background-color: pink;
 }
 
 #score {
@@ -36,6 +34,6 @@ h2 {
   	padding-left: 25px;
   	height: 40px;
   	width: 400px;
-  	background-color: #888;
+  	background-color: pink;
   	margin: 20px auto;
 }
