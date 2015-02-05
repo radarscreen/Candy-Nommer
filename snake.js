@@ -1,3 +1,5 @@
+$(document).ready(function(){
+
 Physics(function(world){
   var viewWidth = 400;
   var viewHeight = 400;
@@ -61,7 +63,7 @@ Physics(function(world){
     vy: 0.0,
     width: 10, //initial snake dimensions
     height: 10,
-    mass: 120000000000, //"ghetto-coded" to get around angular velocity issue
+    mass: 120000000000, 
     //snake appearance
     styles: {
       fillStyle: 'black',
@@ -139,7 +141,7 @@ Physics(function(world){
   });
 
   // sets counter for scoring purposes
-  var counter = 0;
+  var counter = 1;
 
   // collision detection mechanism
   world.on('collisions:detected', function(data, e) {
@@ -176,7 +178,6 @@ Physics(function(world){
 
     // this else block repeats the same steps 
     else if (snake === data.collisions[0].bodyA && newApple === data.collisions[0].bodyB || newApple === data.collisions[0].bodyA && snake === data.collisions[0].bodyB) {
-      console.log("snake eats NEW APPLE");
       world.removeBody(newApple);
       apple.state.pos.set(Math.floor((Math.random() * 380) + 11), Math.floor((Math.random() * 380) + 11));
       counter++;
@@ -186,7 +187,7 @@ Physics(function(world){
       world.add(apple);
     }
 
-    // if the snake collides with its own body, it dies. 
+    // if the snake collides with its own body, it dies, world rendering stops. 
     // else if (snake === data.collisions[0].bodyA && snake === data.collisions[0].bodyB) {
     //   console.log( "snake eats self");
 
@@ -199,9 +200,9 @@ Physics(function(world){
     //     }
     // }
 
-    // if there are any other collisions (like snake with wall), snake dies.
+    // if there are any other collisions (like snake with wall), snake dies, world rendering stops.
     else  {
-      console.log( "snake dies");
+      console.log("snake dies");   //why is snake dying three times and does it matter?
      
       Physics.util.ticker.stop();
     
@@ -209,29 +210,12 @@ Physics(function(world){
 
     // keeps track of player score. 
     console.log("Your score is " + (counter*7));
+    $("#scorer").text("Score: " + (counter*7));
   });
 
 
 
 // this.respond(data);
-
-
-// compound body
-// var chainSim = function(world){
-//     // create chains...                                MERELY A VARIABLE I BELIEVE :/
-// }; 
-// http://wellcaffeinated.net/PhysicsJS/basic-usage
-
-
-// composite bodies still need to be built in. There's no easy way to do this, but you can create a custom body that creates other bodies (eg, custom body that extends a square, that creates two circles). Just add a "connect" and "disconnect" method to the custom body so you can add and remove the extra circle bodies when it's added to a world.
-
-// Then you can use verlet constraints to attach them together.
-
-// As for the appearance, you'd need to find a way to draw that yourself with canvas. If you wanted to have the physics of a curved polygon, you'd have to write that yourself. So it's probably easier to just skin it with an image. To do that just set "body.view = myImage"
-
-// This is a bit outdated, but has some examples: http://flippinawesome.org/2013/12/02/building-a-2d-browser-game-with-physicsjs/
- // http://stackoverflow.com/questions/23668005/agregate-bodies-in-physicsjs
-
 
 
 
@@ -245,4 +229,5 @@ Physics(function(world){
 //     content: 'Win! press "z" to play again';
 //http://modernweb.com/2013/12/02/building-a-2d-browser-game-with-physicsjs/
 
+});
 });
