@@ -1,8 +1,8 @@
 body {
-	background-color: #AFE;
+	background-color: black;
 	background-image: url(snakeMonster.jpg);
 	/*background-size: cover;*/
-	background-position: 500px;
+	background-position: -303px;
 	background-repeat: no-repeat;
     background-attachment: fixed;
     padding-left: 40px;
