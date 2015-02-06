@@ -2,6 +2,7 @@ $(document).ready(function(){
 
 var gameAudio = new Audio("plastic-bertrand-ca-plane-pour-moi.mp3");
 var gameOverSound = new Audio("wah-wah-sound.mp3");
+var chompSound = new Audio("chomp.wav");
 var player = {};
 
 player.score = localStorage.getItem("highScore") || 0;
@@ -171,7 +172,7 @@ Physics(function(world){
 
     // stipulates that apple and snake collisions result in:
     if (snake === data.collisions[0].bodyA && apple === data.collisions[0].bodyB || apple === data.collisions[0].bodyA && snake === data.collisions[0].bodyB) {
-      
+      chompSound.play();
       // the apple being removed from the world,
       world.removeBody(apple);
       
@@ -213,6 +214,7 @@ Physics(function(world){
 
     // this else block repeats the same steps 
     else if (snake === data.collisions[0].bodyA && newApple === data.collisions[0].bodyB || newApple === data.collisions[0].bodyA && snake === data.collisions[0].bodyB) {
+      chompSound.play();
       world.removeBody(newApple);
       apple.state.pos.set(Math.floor((Math.random() * 1150) + 11), Math.floor((Math.random() * 350) + 11));
       counter++;
