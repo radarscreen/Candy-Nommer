@@ -10,17 +10,34 @@
 <body>
 <container>
 <div id="snakeHead"><h1>Candy Nommer!</h1></div>
+	
 
 
+<div id="viewport">
+<form action="javascript:void(0);" class="startGame">
+	
+		<label for="name"></label>Enter Your Name:
+	<p>
+		<input class="nameBox" type="text" id="name" autofocus>
+	</p>
 
-<div id="viewport"></div>
+	<p>
+		<input class="submitButton" type="submit" [value="Submit"]{font-family: 'Press Start 2P', cursive;}>		
+	</p>
+</form>
 
-<div id="score">
-<div><h2 id="scorer">  Hyperactivity Rating: </h2></div>
+<div class="gameOver">Kid Crashes!</div> <!-- Sugar Overload! -->
 </div>
 
-
-
+<div class="score userInfo">
+<div >
+			<h2 class="userName">  Username:  </h2>
+			<h2 class="userScore">  High Score:  </h2>
+</div>
+</div>
+<div class="score">
+<div><h2 class="scorer">  Hyperactivity Rating: </h2></div>
+</div>
 
 	
 <script src="physicsjs-full.js"></script>

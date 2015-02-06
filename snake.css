@@ -2,9 +2,8 @@ body {
 	background-color: pink;
 	background-image: url(candyWorld.jpeg);
 	background-repeat: repeat;
-    background-attachment: fixed;
-    padding-left: 40px;
-	
+  background-attachment: fixed;
+  padding-left: 40px;
 }
 h1 {
 	text-align: center;
@@ -16,24 +15,84 @@ h2 {
 	font-family: 'Press Start 2P', cursive;
 	color: #333;
 }
+.gameOver {
+	opacity: 0;
+	position: absolute;
+	z-index: 5;
+	background: black;
+	color: white;
+	font-size: 32px;
+	text-align: center;
+	font-family: 'Press Start 2P', cursive;
+	left: 33%;
+	top: 33%;
+	padding: 1em;
+}
+.startGame {
+	opacity: 0.6;
+	position: absolute;
+	z-index: 15;
+	background: black;
+	color: white;
+	font-size: 32px;
+	text-align: center;
+	font-family: 'Press Start 2P', cursive;
+	left: 25%;
+	top: 15%;
+	padding: 1em;
+}
+
+.score {
+	display: inline-block;
+	border: 5px solid #333;
+  margin: 0 auto;
+  padding: 5px;
+  padding-left: 31px;
+  height: 40px;
+  width: 400px;
+  background-color: pink;
+  margin: 20px auto;	
+	position: inherit;
+	margin-left: 133px;
+
+}
+
+.nameBox {
+	height: 30px;
+	text-align: center;
+	font-size: 12px;
+}
+
+.submitButton {
+	height: 50px;
+	text-align: center;
+	font-size: 12px;
+	font-family: 'Press Start 2P', cursive;
+}
+.userName{
+	margin: 0;
+}
+
+.userInfo{
+	position: relative;
+	top: 12px;
+}
+
+#name {
+	font-family: 'Press Start 2P', cursive;
+}
+
 #snakeHead {
 	margin: 10px;
 }
+
 #viewport {
+	position: relative;
+	z-index: 0;
 	border: 5px solid #333;
-  	margin: 0 auto;
-  	height: 400px;
-  	width: 400px;
-  	background-color: pink;
+  margin: 0 auto;
+  height: 400px;
+  width: 1200px;
+  background-color: pink;
 }
 
-#score {
-	border: 5px solid #333;
-  	margin: 0 auto;
-  	padding: 5px;
-  	padding-left: 25px;
-  	height: 40px;
-  	width: 400px;
-  	background-color: pink;
-  	margin: 20px auto;
-}

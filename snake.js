@@ -1,11 +1,27 @@
 $(document).ready(function(){
 
+
+
+var player = {};
+
+
+player.score = localStorage.getItem("highScore") || 0;
+$(".userScore").text("High Score: " + parseInt(player.score));
+
+$(".startGame").on("submit", function(e){
+  e.preventDefault();
+  player.userName = $("#name").val();
+  $(".startGame").css("display", "none");
+  $(".userName").text("Username: " + player.userName);
+
+});
+
 Physics(function(world){
-  var viewWidth = 400;
-  var viewHeight = 400;
+  var viewWidth = 1205;  //sets world dimensions
+  var viewHeight = 380;
 
   var snakeVel;
-  var snakeSpeed = 0.1;
+  var snakeSpeed = 0.1;  //initiates kid's speed
 
   //define renderer
   var renderer = Physics.renderer('canvas', {
@@ -31,16 +47,17 @@ Physics(function(world){
 
   // add an "apple"
   var apple = Physics.body('circle', {
-    x: Math.floor((Math.random() * 380) + 6),
-    y: Math.floor((Math.random() * 380) + 6),
-    radius: 5,
+    x: Math.floor((Math.random() * 1150) + 11),
+    y: Math.floor((Math.random() * 335) + 21),
+    radius: 14,
     styles: {
       strokeStyle: '#351024',
       lineWidth: 1,
       fillStyle: 'red',
       angleIndicator: 'white',
       objectType: 'apple'
-    }
+    },
+    treatment: 'static'
   });
 
   // add image of candy
@@ -51,7 +68,7 @@ Physics(function(world){
 
   // define a "newApple" --but NOT added to world yet
   var newApple = Physics.body('circle', {
-  radius: 5,
+  radius: 22,
   styles: {
     fillStyle: 'green',
     angleIndicator: 'white',
@@ -59,6 +76,8 @@ Physics(function(world){
     }
   });
 
+  newApple.view = new Image();
+  newApple.view.src = 'cottonCan.png';
 
   //define snake 
   var snake = Physics.body('rectangle', {
@@ -66,16 +85,19 @@ Physics(function(world){
     y: 250, // y-coordinate
     vx: 0.0, //starts at no velocity
     vy: 0.0,
-    width: 10, //initial snake dimensions
-    height: 10,
+    width: 40, //kids' dimensions
+    height: 30,
     mass: 120000000000, 
     //snake appearance
     styles: {
       fillStyle: 'black',
       angleIndicator: 'white'
     }
-
   });
+
+  //add image of candyKid
+  snake.view = new Image();
+  snake.view.src = 'kidCandy.png';
 
   //snake put to sleep
   snake.sleep(true);
@@ -144,7 +166,7 @@ Physics(function(world){
     }
 
     // value designated to retrieve velocity within other functions
-    snakeVel = vel;
+    snakeVel = vel.clone();
   });
 
   // sets counter for scoring purposes
@@ -162,7 +184,7 @@ Physics(function(world){
       world.removeBody(apple);
       
       // the newApple body has a randomly generated coordinate, 
-      newApple.state.pos.set(Math.floor((Math.random() * 380)+11), Math.floor((Math.random() * 380)+11));
+      newApple.state.pos.set(Math.floor((Math.random() * 1150)+11), Math.floor((Math.random() * 335)+21));
     
       // the players score increases
       counter++;
@@ -188,6 +210,7 @@ Physics(function(world){
       }
 
       snake.state.vel = snakeVel;
+      snake.state.angular.vel = 0;
 
 
 
@@ -208,7 +231,7 @@ Physics(function(world){
     // this else block repeats the same steps 
     else if (snake === data.collisions[0].bodyA && newApple === data.collisions[0].bodyB || newApple === data.collisions[0].bodyA && snake === data.collisions[0].bodyB) {
       world.removeBody(newApple);
-      apple.state.pos.set(Math.floor((Math.random() * 380) + 11), Math.floor((Math.random() * 380) + 11));
+      apple.state.pos.set(Math.floor((Math.random() * 1150) + 11), Math.floor((Math.random() * 350) + 11));
       counter++;
       snake.state.vel = snakeVel;
       snake.sleep(false);
@@ -218,15 +241,31 @@ Physics(function(world){
 
     // if there are any other collisions (like snake with wall), snake dies, world rendering stops.
     else  {
+      world.off('collisions:detected');
       console.log("Running into Walls!! Kid Crashes!");   //why is snake dying three times and does it matter?
-     
+      $(".gameOver").css("opacity", 0.6);
       Physics.util.ticker.stop();
-    
+      player.score = counter * 7;    
+      if(localStorage.getItem("highScore") === null){
+        localStorage.setItem("highScore", parseInt(player.score));
+        $(".userScore").text("High Score: " + player.score);
+      }
+      else if(parseInt(localStorage.getItem("highScore")) < player.score) {
+        localStorage.setItem("highScore", parseInt(player.score));
+        $(".userScore").text("High Score: " + player.score);
+      }
+      else {
+        $(".userScore").text("High Score: " + player.score) ; 
+      }
+      player = JSON.stringify(player);
+      localStorage.setItem("player", player);
     }
+
+
 
     // keeps track of player score. 
     console.log("Your score is " + (counter*7));
-    $("#scorer").text("Hyperactivity Rating: " + (counter*7));
+    $(".scorer").text("Hyperactivity Rating: " + (counter*7));
   });
 
 
