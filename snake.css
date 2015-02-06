@@ -54,7 +54,6 @@ h2 {
   margin: 20px auto;	
 	position: inherit;
 	margin-left: 133px;
-
 }
 
 .nameBox {
@@ -68,7 +67,14 @@ h2 {
 	text-align: center;
 	font-size: 12px;
 	font-family: 'Press Start 2P', cursive;
+	padding: 12px;
 }
+.music {
+	opacity: 0;
+}
+
+
+
 .userName{
 	margin: 0;
 }

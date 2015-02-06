@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Candy Nomming Game</title>
+	<link rel="stylesheet" href="snake.css">
+	<link href='http://fonts.googleapis.com/css?family=Press+Start+2P' rel='stylesheet' type='text/css'>
+	
+</head>
+<body>
+<div class="music">
+ 
+ </div>
+<container>
+<div id="snakeHead"><h1>Candy Nommer!</h1></div>
+	
+
+
+<div id="viewport">
+<form action="javascript:void(0);" class="startGame">
+	
+		<label for="name"></label>Enter Your Name:
+	<p>
+		<input class="nameBox" type="text" id="name" autofocus required>
+	</p>
+
+	<p>
+		<!-- <input  type="submit" value="Submit" >		 -->
+		<button class="submitButton" style="font-family:'Press Start 2P', cursive;color:#333;">Submit </button>
+	</p>
+</form>
+
+<div class="gameOver">Kid Crashes!</div> <!-- Sugar Overload! -->
+</div>
+
+<div class="score userInfo">
+<div >
+			<h2 class="userName">  Username:  </h2>
+			<h2 class="userScore">  High Score:  </h2>
+</div>
+</div>
+<div class="score">
+<div><h2 class="scorer">  Hyperactivity Rating: </h2></div>
+</div>
+
+	
+<script src="physicsjs-full.js"></script>
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript" src="snake.js"></script>
+</container>
+</body>
+</html>

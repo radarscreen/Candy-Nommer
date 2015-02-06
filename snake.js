@@ -1,9 +1,8 @@
 $(document).ready(function(){
 
-
-
+var gameAudio = new Audio("plastic-bertrand-ca-plane-pour-moi.mp3");
+var gameOverSound = new Audio("wah-wah-sound.mp3");
 var player = {};
-
 
 player.score = localStorage.getItem("highScore") || 0;
 $(".userScore").text("High Score: " + parseInt(player.score));
@@ -13,7 +12,7 @@ $(".startGame").on("submit", function(e){
   player.userName = $("#name").val();
   $(".startGame").css("display", "none");
   $(".userName").text("Username: " + player.userName);
-
+  gameAudio.play(); //play song
 });
 
 Physics(function(world){
@@ -32,8 +31,6 @@ Physics(function(world){
     debug: true,
   });
 
-
-
   // add the renderer
   world.add( renderer );
 
@@ -47,7 +44,7 @@ Physics(function(world){
 
   // add an "apple"
   var apple = Physics.body('circle', {
-    x: Math.floor((Math.random() * 1150) + 11),
+    x: Math.floor((Math.random() * 1000) + 30),
     y: Math.floor((Math.random() * 335) + 21),
     radius: 14,
     styles: {
@@ -102,12 +99,9 @@ Physics(function(world){
   //snake put to sleep
   snake.sleep(true);
 
-
   //snake added to world
   world.add(snake);
 
-
-  
   // constrain objects to these bounds
   world.add(Physics.behavior('edge-collision-detection', {
       aabb: viewportBounds,
@@ -123,12 +117,10 @@ Physics(function(world){
   //smooths 'sweeps' the rendering of the collision detections
   world.add(Physics.behavior('sweep-prune') );
 
-
   // subscribe to ticker to advance the simulation
   Physics.util.ticker.on(function( time, dt ){
       world.step( time );
   });
-
 
   // user input for snake's direction changes
   window.addEventListener('keyup', function(event) {
@@ -184,7 +176,7 @@ Physics(function(world){
       world.removeBody(apple);
       
       // the newApple body has a randomly generated coordinate, 
-      newApple.state.pos.set(Math.floor((Math.random() * 1150)+11), Math.floor((Math.random() * 335)+21));
+      newApple.state.pos.set(Math.floor((Math.random() * 1000)+30), Math.floor((Math.random() * 335)+21));
     
       // the players score increases
       counter++;
@@ -212,20 +204,11 @@ Physics(function(world){
       snake.state.vel = snakeVel;
       snake.state.angular.vel = 0;
 
-
-
       snake.sleep(false); 
 
       // and add the newApple to the viewport for the snake to chase.
       world.add(newApple);
 
-
-
-      //make sure to see if i can't also create ("newSnakeBit") and apend to Snake...changing colors of said bit to verify...
-      // function snakeGrows(){
-      //     snake.Append();
-      // };
-      // Physics.util.extend.add(newApple);   could some manipulation of this code create a new instance of the apple?
     }
 
     // this else block repeats the same steps 
@@ -242,13 +225,16 @@ Physics(function(world){
     // if there are any other collisions (like snake with wall), snake dies, world rendering stops.
     else  {
       world.off('collisions:detected');
-      console.log("Running into Walls!! Kid Crashes!");   //why is snake dying three times and does it matter?
+      gameAudio.pause();
+      gameOverSound.play();
+      // console.log("Running into Walls!! Kid Crashes!");   
       $(".gameOver").css("opacity", 0.6);
       Physics.util.ticker.stop();
       player.score = counter * 7;    
       if(localStorage.getItem("highScore") === null){
         localStorage.setItem("highScore", parseInt(player.score));
         $(".userScore").text("High Score: " + player.score);
+
       }
       else if(parseInt(localStorage.getItem("highScore")) < player.score) {
         localStorage.setItem("highScore", parseInt(player.score));
@@ -260,29 +246,10 @@ Physics(function(world){
       player = JSON.stringify(player);
       localStorage.setItem("player", player);
     }
-
-
-
     // keeps track of player score. 
     console.log("Your score is " + (counter*7));
     $(".scorer").text("Hyperactivity Rating: " + (counter*7));
   });
-
-
-
-// this.respond(data);
-
-
-
-// body.before-game:after {
-//     content: 'press "z" to start';
-// }
-// body.lose-game:after {
-//     content: 'press "z" to try again';                    BEFORE & AFTER GAME!  (IN HTML)
-// }
-// body.win-game:after {
-//     content: 'Win! press "z" to play again';
-//http://modernweb.com/2013/12/02/building-a-2d-browser-game-with-physicsjs/
-
 });
 });
+
