@@ -1,5 +1,7 @@
 $(document).ready(function(){
 
+$('button.submitButton.no').on('click', 'rickRoll'); 
+
 var gameAudio = new Audio("plastic-bertrand-ca-plane-pour-moi.mp3");
 var gameOverSound = new Audio("wah-wah-sound.mp3");
 var chompSound = new Audio("chomp.wav");
@@ -18,7 +20,7 @@ $(".startGame").on("submit", function(e){
 
 Physics(function(world){
   var viewWidth = 1205;  //sets world dimensions
-  var viewHeight = 380;
+  var viewHeight = 400;
 
   var snakeVel;
   var snakeSpeed = 0.1;  //initiates kid's speed
@@ -41,13 +43,13 @@ Physics(function(world){
   });
 
   // bounds of the window
-  var viewportBounds = Physics.aabb(0, 0, viewWidth, viewHeight);
+  var viewportBounds = Physics.aabb(-20, 0, viewWidth, viewHeight);
 
   // add an "apple"
   var apple = Physics.body('circle', {
     x: Math.floor((Math.random() * 1000) + 30),
     y: Math.floor((Math.random() * 335) + 21),
-    radius: 14,
+    radius: 4,
     styles: {
       strokeStyle: '#351024',
       lineWidth: 1,
@@ -57,6 +59,11 @@ Physics(function(world){
     },
     treatment: 'static'
   });
+// how far is your home?
+// 
+// i don't have one ...but seriously
+
+
 
   // add image of candy
   apple.view = new Image();
@@ -66,7 +73,7 @@ Physics(function(world){
 
   // define a "newApple" --but NOT added to world yet
   var newApple = Physics.body('circle', {
-  radius: 22,
+  radius: 4,
   styles: {
     fillStyle: 'green',
     angleIndicator: 'white',
@@ -83,8 +90,8 @@ Physics(function(world){
     y: 250, // y-coordinate
     vx: 0.0, //starts at no velocity
     vy: 0.0,
-    width: 40, //kids' dimensions
-    height: 30,
+    width: 47, //kids' dimensions
+    height: 35,
     mass: 120000000000, 
     //snake appearance
     styles: {
@@ -124,7 +131,7 @@ Physics(function(world){
   });
 
   // user input for snake's direction changes
-  window.addEventListener('keyup', function(event) {
+  window.addEventListener('keydown', function(event) {
     snake.sleep(false);
       if (event.keyCode === 37) {
         world.emit('move', 'left');
@@ -139,7 +146,6 @@ Physics(function(world){
 
   // start the ticker
   Physics.util.ticker.start();
-
 
   // sets constant velocity of snake
   world.on('move', function(data, e) {
@@ -167,6 +173,9 @@ Physics(function(world){
 
   // collision detection mechanism
   world.on('collisions:detected', function(data, e) {
+      console.dir(data);
+      // console.log(data);
+
       data.collisions[0].bodyA.sleep(true);
       data.collisions[0].bodyB.sleep(true);
 
@@ -176,8 +185,9 @@ Physics(function(world){
       // the apple being removed from the world,
       world.removeBody(apple);
       
+
       // the newApple body has a randomly generated coordinate, 
-      newApple.state.pos.set(Math.floor((Math.random() * 1000)+30), Math.floor((Math.random() * 335)+21));
+      newApple.state.pos.set(Math.floor((Math.random() * 1000)+30), Math.floor((Math.random() * 335)+40));
     
       // the players score increases
       counter++;
@@ -231,8 +241,11 @@ Physics(function(world){
       gameOverSound.play();
       // console.log("Running into Walls!! Kid Crashes!");   
       $(".gameOver").css("opacity", 0.6);
+
       Physics.util.ticker.stop();
-      player.score = counter * 7;    
+      player.score = counter * 7;   
+
+
       if(localStorage.getItem("highScore") === null){
         localStorage.setItem("highScore", parseInt(player.score));
         $(".userScore").text("High Score: " + player.score);
@@ -255,3 +268,7 @@ Physics(function(world){
 });
 });
 
+function rickRoll(){
+  console.log('rickrolling..');
+  window.open("https://www.youtube.com/watch?v=dQw4w9WgXcQ", "_blank");
+}

@@ -1,0 +1,30 @@
+///////////////////
+			BUGS
+///////////////////	
+
+* CandyKid will bounce off some candy, ricocheting in the opposite direction of what is expected
+
+* Sometimes the candy will still cause a collision event when being rendered on the page at random coordinates
+
+
+///////////////////
+		FEATURES
+///////////////////
+
+* If player chooses to replay the game, the prompt to enter their name should not show up and their name should be saved in local storage
+
+* Choose another place for them to go if they choose not to play the game
+
+* Include the name of the user with the high score, even if it is not the current player
+
+* Make sure music loops if the player goes to song's end
+
+* Make the page dynamic, so it looks good on all screen sizes
+
+* Include different candy items that have different ramifications
+
+* Include other food items that will help slow him down if he nomw them (artichokes, carrots, etc)
+
+* Change his size so he gets bigger with the more candy eaten
+
+* Include levels of difficulty where his speed increases at different rates (maybe a radial dial that the player can choose: Easy, Medium, Difficult)	
